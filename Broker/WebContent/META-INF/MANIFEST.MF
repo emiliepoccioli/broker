@@ -1,0 +1,3 @@
+Manifest-Version: 1.0
+Class-Path: BrokerEJB.jar lib/broker-commons lib/aopalliance-1.0 lib/commons-codec-1.6 lib/commons-fileupload-1.3.1 lib/commons-httpclient-3.1.jar
+
