@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/application_6.xsd" version="6">
+  <display-name>BrokerEAR</display-name>
+  <module>
+    <web>
+      <web-uri>Broker.war</web-uri>
+      <context-root>Broker</context-root>
+    </web>
+  </module>
+  <module>
+    <ejb>BrokerEJB.jar</ejb>
+  </module>
+</application>
