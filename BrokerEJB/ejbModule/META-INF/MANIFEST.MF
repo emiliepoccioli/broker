@@ -1,0 +1,3 @@
+Manifest-Version: 1.0
+Class-Path: BrokerEJBClient.jar lib/cassandra-driver-core-2.0.1 lib/broker-commons lib/guava-14.0.1 lib/metrics-core-3.0.2 lib/netty-3.9.0.Final lib/slf4j-api-1.6.6 lib/stax-api-1.0.1
+
