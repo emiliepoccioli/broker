@@ -10,10 +10,10 @@ import broker.commons.Blob;
 public interface RemoteCassandra extends ICassandra{
 
 
-	public String hello();
-
 	public List<Blob> listBucket (String userId);
 	
 	public Blob getObject(String userId, String objectId);
+	
+	public List<Blob> getObjectByCloud(String userId, String storageName);
 
 }

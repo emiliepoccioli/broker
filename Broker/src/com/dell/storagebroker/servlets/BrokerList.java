@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.dell.cassandra.StatelessCassandraManager;
+import com.dell.cassandra.RemoteCassandra;
 import com.dell.cloud.dasein.CloudManager;
 
 /**
@@ -48,6 +48,9 @@ public class BrokerList extends HttpServlet {
 	public static final String JSON_BLOB_POLICIES = "policies";
 	public static final String JSON_BLOB_TAGS = "tags";
 
+	
+	@EJB
+	public RemoteCassandra cassandraManager;
 
 	
 	/**
@@ -63,29 +66,31 @@ public class BrokerList extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("StorageBroker Servlet : List ACTION");
 		
+		
+		System.out.println("CASSANDRA EJB : " + cassandraManager);
 		try{
 			CloudManager cloudManager = new CloudManager();
-			//LIST ALL BLOBS BY USER
+			//LIST ALL BLOBS FOR A GIVEN USER
 			if(request.getParameter(ACTION_LIST_BUCKET) != null){
 				String userId = request.getParameter(PARAM_LIST_ALL_USER_ID);	
 
-				request.setAttribute("LIST_BLOBS", cloudManager.getBlobs(userId));
+				request.setAttribute("LIST_BLOBS", cloudManager.getBlobs(userId, cassandraManager));
 				request.getRequestDispatcher("/list_blobs_by_user.jsp").forward(request, response);
 			}
-			//LIST DETAILS ON A GIVEN OBJECT
+			//LIST DETAILS ON A GIVEN BLOB
 			else if(request.getParameter(ACTION_LIST_OBJECT) != null){
 				String userId = request.getParameter(PARAM_LIST_OBJECT_USER_ID);
 				String blobId = request.getParameter(PARAM_BLOB_ID);
 
-				//request.setAttribute("LIST_BLOB", cloudManager.getBlob(userId, blobId));
+				request.setAttribute("LIST_BLOB", cloudManager.getBlob(userId, blobId, cassandraManager));
 				request.getRequestDispatcher("/list_blob.jsp").forward(request, response);
 			}
 			//LIST ALL BLOBS FOR A GIVEN STORAGE SERVICE
 			else if(request.getParameter(ACTION_LIST_STORAGE) != null){
-				String userId = request.getParameter(PARAM_USER_UUID);
+				String userId = request.getParameter(PARAM_LIST_STORAGE_USER_ID);
 				String storageName = request.getParameter(PARAM_STORAGE_NAME);
 
-				//request.setAttribute("LIST_BLOBS", cloudManager.getBlobs(userId, storageName));
+				request.setAttribute("LIST_BLOBS", cloudManager.getBlobs(userId, storageName, cassandraManager));
 				request.getRequestDispatcher("/list_blobs_by_user.jsp").forward(request, response);
 			}
 		}

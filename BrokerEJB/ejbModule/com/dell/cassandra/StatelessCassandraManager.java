@@ -88,15 +88,9 @@ public class StatelessCassandraManager implements LocalCassandra, RemoteCassandr
 	public static String USERS_COUNTRY = "country"; 
 
 
-	public String hello(){
-		return "Hello";
-	}
-
-
-
 	public List<Blob> listBucket (String userId){
 
-		System.out.println("List blobs for user : " + userId);
+		System.out.println("!!!!! List blobs for user : " + userId);
 		String userBlobsQ = "SELECT * FROM broker.blob_by_user WHERE user_id = ?";
 		PreparedStatement pStatement = prepareQuery(userBlobsQ); 
 		BoundStatement bStatement = new BoundStatement(pStatement);
@@ -147,12 +141,12 @@ public class StatelessCassandraManager implements LocalCassandra, RemoteCassandr
 
 
 	public List<Blob> getObjectByCloud(String userId, 
-			 String cloudName){
-		System.out.println("List blobs for user : " + userId + " and storage " + cloudName);
+			 String storageName){
+		System.out.println("List blobs for user : " + userId + " and storage " + storageName);
 		String userBlobsQ = "SELECT * FROM broker.blob_by_user WHERE " + BLOB_USER_ID + " = ? AND " + BLOB_STORAGE_NAME + " = ? ALLOW FILTERING";
 		PreparedStatement pStatement = prepareQuery(userBlobsQ); 
 		BoundStatement bStatement = new BoundStatement(pStatement);
-		bStatement.bind(UUID.fromString(userId), cloudName);
+		bStatement.bind(UUID.fromString(userId), storageName);
 		ResultSet result = executeQuery(bStatement);
 		List<Row> rows = result.all();
 		List<Blob> blobs = new ArrayList<Blob>();

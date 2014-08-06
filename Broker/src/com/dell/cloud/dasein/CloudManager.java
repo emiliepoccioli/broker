@@ -13,6 +13,7 @@ import org.json.JSONObject;
 
 import broker.commons.*;
 
+import com.dell.cassandra.RemoteCassandra;
 import com.dell.ejb.clients.CassandraManager;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
@@ -65,9 +66,18 @@ public class CloudManager {
 		return getBlobFromRestJson(restUrl);
 	}*/
 	
-	public List<Blob> getBlobs(String userId){
+	public List<Blob> getBlobs(String userId, RemoteCassandra cassandraManager){
 		System.out.println("** GET BLOBS **");
-		return CassandraManager.getCassandra().listBucket(userId);
+		return cassandraManager.listBucket(userId);
+	}
+	
+	public Blob getBlob(String userId, String blobId, RemoteCassandra cassandraManager){
+		return cassandraManager.getObject(userId, blobId);
+	}
+	
+	public List<Blob> getBlobs(String userId, String storageName, RemoteCassandra cassandraManager) {
+		System.out.println("** GET BLOBS BY STORAGE ** (userId," + userId+") (storageName, " + storageName + ")");
+		return cassandraManager.getObjectByCloud(userId, storageName);	
 	}
 
 	public BlobStoreSupport getBlobStoreSupport(String cloudName, String storageEndpoint, String regionId, CloudCredentials cloudCredentials){
